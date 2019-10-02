@@ -5,6 +5,7 @@ import {connect} from 'react-redux';
 import Actions from '../actions/index';
 //import NaviagtionService from '../services/NavigationService'
 class Home extends React.Component { 
+    
     logout=async ()=>{
           this.props.googleSignOut(this.props.navigation);
     }

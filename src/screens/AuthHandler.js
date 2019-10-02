@@ -27,7 +27,7 @@ class Component extends React.Component {
                 <Text style={styles.title}>WeChat</Text>
                 <Text style={styles.subtitle}>Keep the conversations going no matter where you are</Text>
                 <Image style={styles.Image}  source={{uri:'https://www.viber.com/app/uploads/viber-logo.png'}}></Image>   
-                {/* <Image source={require('../assests/animation.gif')}></Image>   */}
+                <Image source={require('../assests/animation.gif')}></Image>  
                 <GoogleSignin navigation={this.props.navigation}></GoogleSignin>
                 <FacebookSignIn navigation={this.props.navigation} ></FacebookSignIn>
                
