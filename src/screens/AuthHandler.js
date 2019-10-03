@@ -3,6 +3,7 @@ import {View,Text,Button,Image,StyleSheet,ActivityIndicator} from 'react-native'
 import FacebookSignIn from '../components/FacebookSignIn'
 //import NavigationService from '../services/NavigationService'
 import AsyncStorage from '@react-native-community/async-storage';
+import Constants from '../constants'
 
 import  GoogleSignin from "../components/GoogleSignin";
 
@@ -11,9 +12,9 @@ class Component extends React.Component {
         userInfo:null,isSigninInProgress:true  //it is mainly token fetching progress
     }
     async componentDidMount(){
-        const JWT_TOKEN=await AsyncStorage.getItem('JWT_TOKEN')
+        const CURRENT_USER=await AsyncStorage.getItem(Constants.CURRENT_USER)
         this.setState({isSigninInProgress:false})
-        if(JWT_TOKEN){
+        if(CURRENT_USER){
             this.props.navigation.navigate('mainFlow');
         }
     }
@@ -27,7 +28,7 @@ class Component extends React.Component {
                 <Text style={styles.title}>WeChat</Text>
                 <Text style={styles.subtitle}>Keep the conversations going no matter where you are</Text>
                 <Image style={styles.Image}  source={{uri:'https://www.viber.com/app/uploads/viber-logo.png'}}></Image>   
-                <Image source={require('../assests/animation.gif')}></Image>  
+                {/* <Image source={require('../assests/animation.gif')}></Image>   */}
                 <GoogleSignin navigation={this.props.navigation}></GoogleSignin>
                 <FacebookSignIn navigation={this.props.navigation} ></FacebookSignIn>
                

@@ -3,6 +3,8 @@ import apis from '../apis/index'
 //import NavigationService from '../services/NavigationService'
 import AsyncStorage from '@react-native-community/async-storage';
 import { GoogleSignin } from 'react-native-google-signin';
+import {Toast} from 'native-base';
+import Constants from '../constants';
 
 
 function GoogleSignIn(GoogleSignin,statusCodes,navigation){
@@ -11,9 +13,8 @@ function GoogleSignIn(GoogleSignin,statusCodes,navigation){
             const avail=await GoogleSignin.hasPlayServices();
             const userInfo = await GoogleSignin.signIn();
             const { data }=await apis.loginGoogle(userInfo.idToken,'google')
-            await AsyncStorage.setItem('JWT_TOKEN',data.jwtToken)
+            await AsyncStorage.setItem(Constants.CURRENT_USER,JSON.stringify(data))
             dispatch({type:Types.GOOGLE_SIGNIN_COMPLETE,payload:data})
-            console.log(navigation);
             navigation.navigate('mainFlow');
           } 
           catch (error) {
@@ -36,7 +37,7 @@ function GoogleSignIn(GoogleSignin,statusCodes,navigation){
       try {
         await GoogleSignin.revokeAccess();
         await GoogleSignin.signOut();
-        await AsyncStorage.removeItem('JWT_TOKEN');
+        await AsyncStorage.removeItem(Constants.CURRENT_USER);
         dispatch({type:Types.GOOGLE_SIGNOUT,payload:true})
         navigation.navigate('auth')
          // Remember to remove the user from your app's state as well
