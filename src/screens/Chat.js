@@ -1,30 +1,66 @@
 import React, { Component } from 'react';
-import { Container, Header, Content, List, ListItem, Left, Body, Right, Thumbnail, Text } from 'native-base';
-export default class ListAvatarExample extends Component {
+import { Image,FlatList,ActivityIndicator } from 'react-native';
+import { connect } from 'react-redux';
+import { Container, Header, Content, Card, CardItem, Thumbnail, Text, Button, Icon, Left, Body, Right } from 'native-base';
+import CardComponent from '../components/CardComponent';
+import action from '../actions/index'
+class CardImageExample extends Component {
+
+  state={
+    dataRecieved:false,pageNo:1
+  }
+
+  renderCard=({item})=>{
+      return (
+        <CardComponent  name={item.name} ></CardComponent>
+      )
+  }
+  componentWillReceiveProps(){
+    console.log('compoenent will recieve props')
+  }
+  componentDidMount(){
+       this.props.connectSocket();
+       this.props.fetchUsers(1);
+      
+  }
+
   render() {
-    return (
-      <Container>
+    console.log(this.props,"these are the props")
+    if(this.props.users!==null&&this.props.users.status){
+      return(
+        <Container>
         <Header />
         <Content>
-          <List>
-            <ListItem onPress={()=>{this.props.navigation.navigate('messageSection')}} avatar>
-              <Left>
-                <Thumbnail source={{ uri: 'https://i.pravatar.cc/150' }} />
-              </Left>
-              <Body>
-                <Text>Kumar Pratik</Text>
-                <Text note>Doing what you like will always keep you happy . .</Text>
-              </Body>
-              <Right>
-                <Text note>3:43 pm</Text>
-              </Right>
-            </ListItem>
-          </List>
+          <FlatList
+          renderItem={this.renderCard}
+          data={this.props.users.users}
+          keyExtractor={(x)=>x._id}
+          />
         </Content>
       </Container>
-    );
+      )
+    }else{
+      return(
+        <ActivityIndicator></ActivityIndicator>
+      )
+    }
   }
 }
+
+const mapStateToProps=(state)=>{
+  return {
+    users:state.fetchUsers
+  }
+}
+
+const mapActionsToProps={
+  fetchUsers:action.fetchUsers,
+  connectSocket:action.connectSocket
+}
+
+export default connect(mapStateToProps,mapActionsToProps)(CardImageExample)
+
+
 
 
 // componentDidMount(){
@@ -34,3 +70,5 @@ export default class ListAvatarExample extends Component {
 //         console.log(socket.id);
 //     })
 // }
+
+//https://i.pravatar.cc/150
