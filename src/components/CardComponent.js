@@ -19,7 +19,7 @@ import { Container, Header, Content, Card, CardItem, Thumbnail, Text, Button, Ic
     </Body>
   </Left>
 </CardItem>
-<CardItem button={true} onPress={()=>this.props.navigation.navigate('messageSection')} cardBody>
+<CardItem button={true} onPress={()=>this.props.navigation.navigate('messageSection',{sendersId:this.props.id})} cardBody>
   <Image source={{uri: 'https://i.pravatar.cc'}} style={{height: 200, width: null, flex: 1}}/>
 </CardItem>
 

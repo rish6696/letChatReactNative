@@ -1,7 +1,8 @@
 import axios from 'axios'
+import Constants from '../constants';
 
 const instance=axios.create({
-    baseURL:'http://demoauth.chickenkiller.com:5896/'
+    baseURL:Constants.SERVER_URL
 })
 
 const loginGoogle=(token,source)=>{

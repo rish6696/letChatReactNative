@@ -5,7 +5,7 @@ import { createBottomTabNavigator } from 'react-navigation-tabs'
 
 import AuthHandler from './screens/AuthHandler'
 import Home from './screens/Home'
-import ChatSection from './screens/Chat'
+import ChatSection from './screens/ProfileList'
 import Messages from './screens/Messages'
 
 

@@ -2,13 +2,14 @@ import Types from './types';
 import apis from '../apis/index'
 //import NavigationService from '../services/NavigationService'
 import AsyncStorage from '@react-native-community/async-storage';
-import io from 'socket.io-client';
+
 import { GoogleSignin } from 'react-native-google-signin';
 import {Toast} from 'native-base';
 import Constants from '../constants';
 import constants from '../constants';
 import store from '../store'
 import { Actions } from 'react-native-gifted-chat';
+import io from 'socket.io-client'
 
 
 
@@ -83,14 +84,39 @@ function GoogleSignIn(GoogleSignin,statusCodes,navigation){
 
 
  function connectSocket(){
+
    return (dispatch,getState)=>{
      const socket=io(Constants.SERVER_URL);
      socket.on('connect',()=>{
          dispatch({ type:Types.CONNECT_SOCKET, payload:socket })
      })
+    // socket.on('chat_recieved',onMessagerecieved)
 
-     socket.on('chat_recieved',onMessagerecieved)
    }
+
+ }
+
+ ///have to call get current user only once in the app
+
+ function joinRoom(recieverId){
+  return async (dispatch,getStore)=>{
+    const strObj=await AsyncStorage.getItem(Constants.CURRENT_USER);
+    const senderId=(JSON.parse(strObj)).userID;
+    const {connectSocket}=getStore();
+    const socket=connectSocket.socket;
+    socket.emit('JOIN_CHAT',{
+      reciever:recieverId,
+      sender:senderId
+    })
+
+   socket.on('SAVE_ROOM_ID',(roomId)=>{
+     console.log("recieved room id from server="+roomId)
+     dispatch({type:Types.JOIN_ROOM,payload:roomId})
+   })
+
+   
+  }
+
  }
 
  function getCurrentUser(){
@@ -100,15 +126,18 @@ function GoogleSignIn(GoogleSignin,statusCodes,navigation){
    }
  }
 
- function sendMessage(messageArray){
-       return (dispatch,getStore)=>{
-          const {connectSocket}=getStore();
-          const socket=connectSocket.socket;
-          socket.emit('sending_chat',messageArray)
-          dispatch({type:Types.SEND_MESSAGE,payload:messageArray})
-       }
- }
+//  function sendMessage(messageArray){
+//        return (dispatch,getStore)=>{
+//           const {connectSocket}=getStore();
+//           const socket=connectSocket.socket;
+//           socket.emit('sending_chat',messageArray)
+//           dispatch({type:Types.SEND_MESSAGE,payload:messageArray})
+//        }
+//  }
 
  export default {
-     GoogleSignIn,googleSignOut,fetchUsers,connectSocket,getCurrentUser,sendMessage
+     GoogleSignIn,googleSignOut,fetchUsers,getCurrentUser,connectSocket,joinRoom
  }
+
+
+ 

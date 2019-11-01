@@ -12,20 +12,19 @@ class CardImageExample extends Component {
 
   renderCard=({item})=>{
       return (
-        <CardComponent  name={item.name} ></CardComponent>
+        <CardComponent id={item['_id']} name={item.name} ></CardComponent>
       )
   }
   componentWillReceiveProps(){
     console.log('compoenent will recieve props')
   }
   componentDidMount(){
-       this.props.connectSocket();
        this.props.fetchUsers(1);
-      
+       this.props.connectSocket();
   }
 
   render() {
-    console.log(this.props,"these are the props")
+    console.log(this.props,"these are the props***************************")
     if(this.props.users!==null&&this.props.users.status){
       return(
         <Container>

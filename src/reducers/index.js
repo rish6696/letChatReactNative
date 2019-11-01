@@ -79,6 +79,16 @@ const fetchUsers=(state=null,action)=>{
   }
 }
 
+
+const joinRoom=(state=null,action)=>{
+    switch (action.type) {
+        case Types.JOIN_ROOM:
+            return action.payload
+        default:
+            return state;
+    }
+}
+
 export default combineReducers({
-    GoogleSignAuth,fetchUsers,connectSocket,currentUser,messageSupply
+    GoogleSignAuth,fetchUsers,connectSocket,currentUser,messageSupply,joinRoom
 })
